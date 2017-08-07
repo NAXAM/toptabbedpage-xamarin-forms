@@ -3,11 +3,9 @@ TopTabbedPage - Xamarin.Forms control
 
 A Xamarin.Forms page based TabbedPage to show tabs at top on iOS.
 
-<div>
-<img src="./art/tab1.png" alt="Tab 1" style="display:inline-block; width: 320px;"/>
-<img src="./art/tab5.png" alt="Tab 5" style="display:inline-block; width: 320px;"/>
-</div>
 
+|![Tab 1](./art/tab1.png)|![Tab 5](./art/tab5.png)|
+|:---:|:---:|
 ## Installation
 
     Install-Package Naxam.TopTabbedPage.Forms
