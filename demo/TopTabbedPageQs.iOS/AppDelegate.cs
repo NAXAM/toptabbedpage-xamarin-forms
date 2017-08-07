@@ -18,6 +18,9 @@ namespace TopTabbedPageQs.iOS
 
             LoadApplication(new App());
 
+            UINavigationBar.Appearance.ShadowImage = new UIImage();
+            UINavigationBar.Appearance.SetBackgroundImage(new UIImage(), UIBarMetrics.Default);
+
             return base.FinishedLaunching(app, options);
         }
     }

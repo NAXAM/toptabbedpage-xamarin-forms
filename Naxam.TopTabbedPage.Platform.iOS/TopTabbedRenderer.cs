@@ -49,10 +49,11 @@ namespace Naxam.Controls.Platform.iOS
 
         protected TabbedPage Tabbed
         {
-            get { return (TabbedPage) Element; }
+            get { return (TabbedPage)Element; }
         }
 
         protected TabsView TabBar;
+        private NSLayoutConstraint tabBarHeight;
 
         public TopTabbedRenderer()
         {
@@ -80,18 +81,19 @@ namespace Naxam.Controls.Platform.iOS
         {
             if (selectedIndex == lastSelectedIndex) return;
 
-			var direction = lastSelectedIndex < selectedIndex
-							 ? UIPageViewControllerNavigationDirection.Forward
-							 : UIPageViewControllerNavigationDirection.Reverse;
+            var direction = lastSelectedIndex < selectedIndex
+                             ? UIPageViewControllerNavigationDirection.Forward
+                             : UIPageViewControllerNavigationDirection.Reverse;
+
+            lastSelectedIndex = selectedIndex;
 
             SelectedViewController = ViewControllers[lastSelectedIndex];
 
-			lastSelectedIndex = selectedIndex;
-			pageViewController.SetViewControllers(
-				new[] { SelectedViewController },
-				direction,
-				true, null
-			);
+            pageViewController.SetViewControllers(
+                new[] { SelectedViewController },
+                direction,
+                true, null
+            );
         }
 
         public override void DidRotate(UIInterfaceOrientation fromInterfaceOrientation)
@@ -119,15 +121,18 @@ namespace Naxam.Controls.Platform.iOS
 
             if (Element == null)
                 return;
-
-            if (!Element.Bounds.IsEmpty)
+            
+            if (ParentViewController != null)
+			{
+				var parentFrame = ParentViewController.View.Frame;
+                Element.Layout(new Rectangle(0, 0, (float)parentFrame.Width, (float)(parentFrame.Height + parentFrame.Y)));
+            }
+            else if (!Element.Bounds.IsEmpty)
             {
-                View.Frame = new System.Drawing.RectangleF((float) Element.X, (float) Element.Y, (float) Element.Width, (float) Element.Height);
+                View.Frame = new System.Drawing.RectangleF((float)Element.X, (float)Element.Y, (float)Element.Width, (float)Element.Height);
             }
 
-            var frame = View.Frame;
-            var tabBarFrame = TabBar.Frame;
-            var y = tabBarFrame.Y + tabBarFrame.Height;
+            var frame = ParentViewController != null ? ParentViewController.View.Frame : View.Frame;
             PageController.ContainerArea = new Rectangle(0, 0, frame.Width, frame.Height);
 
             if (!_queuedSize.IsZero)
@@ -202,18 +207,16 @@ namespace Naxam.Controls.Platform.iOS
                 1, 0
             ));
 
-            var tabBarHeight = ParentViewController != null
-                ? 48
-                : 68;
-            TabBar.AddConstraint(NSLayoutConstraint.Create(
+            tabBarHeight = NSLayoutConstraint.Create(
                 TabBar,
                 NSLayoutAttribute.Height,
                 NSLayoutRelation.Equal,
-                1, tabBarHeight
-            ));
+                1, 68
+            );
+            TabBar.AddConstraint(tabBarHeight);
 
             pageViewController.SetViewControllers(
-                new[] {ViewControllers[0]},
+                new[] { ViewControllers[0] },
                 UIPageViewControllerNavigationDirection.Forward,
                 true, null
             );
@@ -223,12 +226,23 @@ namespace Naxam.Controls.Platform.iOS
 
         private void HandlePageViewControllerDidFinishAnimating(object sender, UIPageViewFinishedAnimationEventArgs e)
         {
-            if (e.Finished == false) return;
+            if (pageViewController.ViewControllers.Length == 0) return;
 
             SelectedViewController = pageViewController.ViewControllers[0];
             var index = ViewControllers.IndexOf(SelectedViewController);
 
             TabBar.SelectedIndex = index;
+            lastSelectedIndex = index;
+        }
+
+        public override void DidMoveToParentViewController(UIViewController parent)
+        {
+            base.DidMoveToParentViewController(parent);
+			
+            var parentFrame = ParentViewController.View.Frame;
+			View.Frame = new System.Drawing.RectangleF((float)parentFrame.X, (float)parentFrame.Y, (float)parentFrame.Width, (float)parentFrame.Height);
+
+            tabBarHeight.Constant = 48;
         }
 
         protected override void Dispose(bool disposing)
@@ -260,19 +274,19 @@ namespace Naxam.Controls.Platform.iOS
         {
             if (e.PropertyName == Page.TitleProperty.PropertyName)
             {
-                var page = (Page) sender;
+                var page = (Page)sender;
                 var renderer = Platform.GetRenderer(page);
                 if (renderer == null)
                     return;
 
                 //TODO Update title for specific controller
                 //if (renderer.ViewController.TabBarItem != null)
-                    //renderer.ViewController.TabBarItem.Title = page.Title;
+                //renderer.ViewController.TabBarItem.Title = page.Title;
             }
             else if (e.PropertyName == Page.IconProperty.PropertyName ||
                      e.PropertyName == Page.TitleProperty.PropertyName)
             {
-                var page = (Page) sender;
+                var page = (Page)sender;
 
                 IVisualElementRenderer renderer = Platform.GetRenderer(page);
 
@@ -283,7 +297,7 @@ namespace Naxam.Controls.Platform.iOS
 
         void OnPagesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            e.Apply((o, i, c) => SetupPage((Page) o, i), (o, i) => TeardownPage((Page) o, i), Reset);
+            e.Apply((o, i, c) => SetupPage((Page)o, i), (o, i) => TeardownPage((Page)o, i), Reset);
 
             SetControllers();
 
@@ -314,10 +328,10 @@ namespace Naxam.Controls.Platform.iOS
                 if (controller == null)
                     return;
 
-				SelectedViewController = controller;
-				var index = ViewControllers.IndexOf(SelectedViewController);
-				MoveToByIndex(index);
-				TabBar.SelectedIndex = index;
+                SelectedViewController = controller;
+                var index = ViewControllers.IndexOf(SelectedViewController);
+                MoveToByIndex(index);
+                TabBar.SelectedIndex = index;
             }
             else if (e.PropertyName == TabbedPage.BarBackgroundColorProperty.PropertyName)
                 UpdateBarBackgroundColor();

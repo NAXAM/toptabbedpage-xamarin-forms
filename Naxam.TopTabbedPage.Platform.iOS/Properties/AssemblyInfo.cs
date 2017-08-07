@@ -5,10 +5,10 @@ using System.Runtime.CompilerServices;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle("Naxam.TopTabbedPage.Platform.iOS")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Xamarin.Forms Control - TopTabbedPage for iOS")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NAXAM COMPANY LIMITED")]
-[assembly: AssemblyProduct("")]
+[assembly: AssemblyProduct("X Controls")]
 [assembly: AssemblyCopyright("Copyright (c) 2017 NAXAM")]
 [assembly: AssemblyTrademark("NAXAM")]
 [assembly: AssemblyCulture("")]
