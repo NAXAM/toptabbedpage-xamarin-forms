@@ -73,16 +73,21 @@ namespace Naxam.Controls.Platform.iOS
 
         void HandleTabsSelectionChanged(object sender, TabsSelectionChangedEventArgs e)
         {
-            var direction = lastSelectedIndex < (int) e.SelectedIndex 
-                             ? UIPageViewControllerNavigationDirection.Forward
-                             : UIPageViewControllerNavigationDirection.Reverse;
+            MoveToByIndex((int)e.SelectedIndex);
+        }
 
-            lastSelectedIndex = (int)e.SelectedIndex;
-            pageViewController.SetViewControllers(
-                new [] {ViewControllers[lastSelectedIndex] },
+        void MoveToByIndex(int selectedIndex)
+        {
+			var direction = lastSelectedIndex < selectedIndex
+							 ? UIPageViewControllerNavigationDirection.Forward
+							 : UIPageViewControllerNavigationDirection.Reverse;
+
+			lastSelectedIndex = selectedIndex;
+			pageViewController.SetViewControllers(
+				new[] { ViewControllers[lastSelectedIndex] },
 				direction,
 				true, null
-            );
+			);
         }
 
         public override void DidRotate(UIInterfaceOrientation fromInterfaceOrientation)
@@ -133,7 +138,6 @@ namespace Naxam.Controls.Platform.iOS
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-
 
             View.AddSubview(TabBar);
 
@@ -210,7 +214,17 @@ namespace Naxam.Controls.Platform.iOS
                 true, null
             );
             pageViewController.WeakDataSource = this;
-            pageViewController.WeakDelegate = this;
+            pageViewController.DidFinishAnimating += HandlePageViewControllerDidFinishAnimating;
+        }
+
+        private void HandlePageViewControllerDidFinishAnimating(object sender, UIPageViewFinishedAnimationEventArgs e)
+        {
+            if (e.Finished == false) return;
+
+            var viewController = pageViewController.ViewControllers[0];
+            var index = ViewControllers.IndexOf(viewController);
+
+            TabBar.SelectedIndex = index;
         }
 
         protected override void Dispose(bool disposing)
@@ -221,6 +235,7 @@ namespace Naxam.Controls.Platform.iOS
                 Tabbed.PropertyChanged -= OnPropertyChanged;
                 Tabbed.PagesChanged -= OnPagesChanged;
                 TabBar.TabsSelectionChanged -= HandleTabsSelectionChanged;
+                pageViewController.DidFinishAnimating -= HandlePageViewControllerDidFinishAnimating;
             }
 
             base.Dispose(disposing);

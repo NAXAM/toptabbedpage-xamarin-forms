@@ -1,8 +1,9 @@
-﻿using UIKit;
+﻿using Foundation;
+using UIKit;
 
 namespace Naxam.Controls.Platform.iOS
 {
-    public partial class TopTabbedRenderer : IUIPageViewControllerDelegate, IUIPageViewControllerDataSource
+    public partial class TopTabbedRenderer : IUIPageViewControllerDataSource
     {
         public UIViewController GetPreviousViewController(UIPageViewController pageViewController, UIViewController referenceViewController)
         {

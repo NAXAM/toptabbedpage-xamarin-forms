@@ -29,6 +29,16 @@ namespace TopTabbedPageQs
 				Title = "Tab 3",
                 BackgroundColor = Color.BlueViolet
 			});
+			tabs.Children.Add(new ContentPage
+			{
+				Title = "Tab 4",
+				BackgroundColor = Color.Beige
+			});
+			tabs.Children.Add(new ContentPage
+			{
+				Title = "Tab 5",
+				BackgroundColor = Color.BlueViolet
+			});
             //MainPage = new NavigationPage(tabs) { };
 
 	        MainPage = tabs;

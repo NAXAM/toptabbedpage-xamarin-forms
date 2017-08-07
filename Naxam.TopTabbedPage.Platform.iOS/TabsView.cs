@@ -36,9 +36,19 @@ namespace Naxam.Controls.Platform.iOS
             }
         }
 
+        public int SelectedIndex
+        {
+            get { return (int)_tabBar.SelectedIndex; }
+            set
+            {
+                _tabBar.SelectedIndex = (nuint)value;
+            }
+        }
+
         public TabsView()
         {
-            _tabBar = new MDTabBar {
+            _tabBar = new MDTabBar
+            {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
             _tabBar.WeakDelegate = this;
@@ -71,12 +81,12 @@ namespace Naxam.Controls.Platform.iOS
                 1, 0
             ));
 
-			_tabBar.AddConstraint(NSLayoutConstraint.Create(
-				_tabBar,
+            _tabBar.AddConstraint(NSLayoutConstraint.Create(
+                _tabBar,
                 NSLayoutAttribute.Height,
                 NSLayoutRelation.Equal,
-				1, 48
-			));
+                1, 48
+            ));
         }
 
         internal void SetItems(IEnumerable<string> titles)
@@ -90,7 +100,8 @@ namespace Naxam.Controls.Platform.iOS
         }
     }
 
-    public class TabsSelectionChangedEventArgs : EventArgs {
+    public class TabsSelectionChangedEventArgs : EventArgs
+    {
         public nuint SelectedIndex { get; }
 
         public TabsSelectionChangedEventArgs(nuint selectedIndex)
