@@ -78,13 +78,17 @@ namespace Naxam.Controls.Platform.iOS
 
         void MoveToByIndex(int selectedIndex)
         {
+            if (selectedIndex == lastSelectedIndex) return;
+
 			var direction = lastSelectedIndex < selectedIndex
 							 ? UIPageViewControllerNavigationDirection.Forward
 							 : UIPageViewControllerNavigationDirection.Reverse;
 
+            SelectedViewController = ViewControllers[lastSelectedIndex];
+
 			lastSelectedIndex = selectedIndex;
 			pageViewController.SetViewControllers(
-				new[] { ViewControllers[lastSelectedIndex] },
+				new[] { SelectedViewController },
 				direction,
 				true, null
 			);
@@ -221,8 +225,8 @@ namespace Naxam.Controls.Platform.iOS
         {
             if (e.Finished == false) return;
 
-            var viewController = pageViewController.ViewControllers[0];
-            var index = ViewControllers.IndexOf(viewController);
+            SelectedViewController = pageViewController.ViewControllers[0];
+            var index = ViewControllers.IndexOf(SelectedViewController);
 
             TabBar.SelectedIndex = index;
         }
@@ -285,9 +289,17 @@ namespace Naxam.Controls.Platform.iOS
 
             UIViewController controller = null;
             if (Tabbed.CurrentPage != null)
+            {
                 controller = GetViewController(Tabbed.CurrentPage);
+            }
+
             if (controller != null && controller != SelectedViewController)
+            {
                 SelectedViewController = controller;
+                var index = ViewControllers.IndexOf(SelectedViewController);
+                MoveToByIndex(index);
+                TabBar.SelectedIndex = index;
+            }
         }
 
         void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -302,7 +314,10 @@ namespace Naxam.Controls.Platform.iOS
                 if (controller == null)
                     return;
 
-                SelectedViewController = controller;
+				SelectedViewController = controller;
+				var index = ViewControllers.IndexOf(SelectedViewController);
+				MoveToByIndex(index);
+				TabBar.SelectedIndex = index;
             }
             else if (e.PropertyName == TabbedPage.BarBackgroundColorProperty.PropertyName)
                 UpdateBarBackgroundColor();
