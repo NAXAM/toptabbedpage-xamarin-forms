@@ -7,8 +7,10 @@ using UIKit;
 
 namespace Naxam.Controls.Platform.iOS
 {
-    public class TabsView : UIView
+    public class TabsView : UIView, IMDTabBarDelegate
     {
+        public event EventHandler<TabsSelectionChangedEventArgs> TabsSelectionChanged;
+
         readonly MDTabBar _tabBar;
 
         public override UIColor BackgroundColor
@@ -39,6 +41,7 @@ namespace Naxam.Controls.Platform.iOS
             _tabBar = new MDTabBar {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
+            _tabBar.WeakDelegate = this;
 
             AddSubview(_tabBar);
 
@@ -79,6 +82,20 @@ namespace Naxam.Controls.Platform.iOS
         internal void SetItems(IEnumerable<string> titles)
         {
             _tabBar.SetItems(titles.Select(x => new NSString(x)).Cast<NSObject>().ToArray());
+        }
+
+        public void DidChangeSelectedIndex(MDTabBar tabBar, nuint selectedIndex)
+        {
+            TabsSelectionChanged?.Invoke(this, new TabsSelectionChangedEventArgs(selectedIndex));
+        }
+    }
+
+    public class TabsSelectionChangedEventArgs : EventArgs {
+        public nuint SelectedIndex { get; }
+
+        public TabsSelectionChangedEventArgs(nuint selectedIndex)
+        {
+            SelectedIndex = selectedIndex;
         }
     }
 }

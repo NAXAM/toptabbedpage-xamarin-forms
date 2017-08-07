@@ -28,11 +28,11 @@ namespace Naxam.Controls.Platform.iOS
         {
         }
 
-        bool _barTextColorWasSet;
         UIColor _defaultBarColor;
         bool _defaultBarColorSet;
         bool _loaded;
         Size _queuedSize;
+        int lastSelectedIndex;
 
         Page Page => Element as Page;
 
@@ -68,6 +68,21 @@ namespace Naxam.Controls.Platform.iOS
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
+            TabBar.TabsSelectionChanged += HandleTabsSelectionChanged;
+        }
+
+        void HandleTabsSelectionChanged(object sender, TabsSelectionChangedEventArgs e)
+        {
+            var direction = lastSelectedIndex < (int) e.SelectedIndex 
+                             ? UIPageViewControllerNavigationDirection.Forward
+                             : UIPageViewControllerNavigationDirection.Reverse;
+
+            lastSelectedIndex = (int)e.SelectedIndex;
+            pageViewController.SetViewControllers(
+                new [] {ViewControllers[lastSelectedIndex] },
+				direction,
+				true, null
+            );
         }
 
         public override void DidRotate(UIInterfaceOrientation fromInterfaceOrientation)
@@ -98,8 +113,7 @@ namespace Naxam.Controls.Platform.iOS
 
             if (!Element.Bounds.IsEmpty)
             {
-                View.Frame = new System.Drawing.RectangleF((float) Element.X, (float) Element.Y, (float) Element.Width,
-                    (float) Element.Height);
+                View.Frame = new System.Drawing.RectangleF((float) Element.X, (float) Element.Y, (float) Element.Width, (float) Element.Height);
             }
 
             var frame = View.Frame;
@@ -206,6 +220,7 @@ namespace Naxam.Controls.Platform.iOS
                 PageController.SendDisappearing();
                 Tabbed.PropertyChanged -= OnPropertyChanged;
                 Tabbed.PagesChanged -= OnPagesChanged;
+                TabBar.TabsSelectionChanged -= HandleTabsSelectionChanged;
             }
 
             base.Dispose(disposing);
@@ -224,8 +239,6 @@ namespace Naxam.Controls.Platform.iOS
 
         void OnPagePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // Setting TabBarItem.Title in iOS 10 causes rendering bugs
-            // Work around this by creating a new UITabBarItem on each change
             if (e.PropertyName == Page.TitleProperty.PropertyName)
             {
                 var page = (Page) sender;
@@ -233,8 +246,9 @@ namespace Naxam.Controls.Platform.iOS
                 if (renderer == null)
                     return;
 
-                if (renderer.ViewController.TabBarItem != null)
-                    renderer.ViewController.TabBarItem.Title = page.Title;
+                //TODO Update title for specific controller
+                //if (renderer.ViewController.TabBarItem != null)
+                    //renderer.ViewController.TabBarItem.Title = page.Title;
             }
             else if (e.PropertyName == Page.IconProperty.PropertyName ||
                      e.PropertyName == Page.TitleProperty.PropertyName)
