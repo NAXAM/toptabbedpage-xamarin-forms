@@ -27,6 +27,15 @@ namespace Naxam.Controls.Platform.iOS
             }
         }
 
+        public UIColor IndicatorColor
+        {
+            get => _tabBar.IndicatorColor;
+            set
+            {
+                _tabBar.IndicatorColor = value;
+            }
+        }
+
         public UIColor TextColor
         {
             get { return _tabBar.TextColor; }

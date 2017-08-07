@@ -39,11 +39,13 @@ namespace Naxam.Controls.Platform.iOS
 
             OnPagesChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 
+            //TODO Call using reflection
             //if (element != null)
             //element.SendViewInitialized(NativeView);
 
             UpdateBarBackgroundColor();
             UpdateBarTextColor();
+            UpdateBarIndicatorColor();
 
             EffectUtilities.RegisterEffectControlProvider(this, oldElement, element);
         }

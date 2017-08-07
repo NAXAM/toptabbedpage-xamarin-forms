@@ -14,7 +14,9 @@ namespace TopTabbedPageQs
             var tabs = new TopTabbedPage
             {
                 Title = "Top Tabs",
-                BarBackgroundColor = Color.FromHex("9C27B0")
+                BarBackgroundColor = Color.FromHex("9C27B0"),
+                //BarIndicatorColor = Color.DeepPink,
+                //BarTextColor = Color.DeepPink
             };
             tabs.Children.Add(new ContentPage {
                 Title = "Tab 1",

@@ -47,9 +47,9 @@ namespace Naxam.Controls.Platform.iOS
             get { return Page; }
         }
 
-        protected TabbedPage Tabbed
+        protected TopTabbedPage Tabbed
         {
-            get { return (TabbedPage)Element; }
+            get { return (TopTabbedPage)Element; }
         }
 
         protected TabsView TabBar;
@@ -336,7 +336,9 @@ namespace Naxam.Controls.Platform.iOS
             else if (e.PropertyName == TabbedPage.BarBackgroundColorProperty.PropertyName)
                 UpdateBarBackgroundColor();
             else if (e.PropertyName == TabbedPage.BarTextColorProperty.PropertyName)
-                UpdateBarTextColor();
+				UpdateBarTextColor();
+			else if (e.PropertyName == TopTabbedPage.BarIndicatorColorProperty.PropertyName)
+				UpdateBarIndicatorColor();
         }
 
         public override UIViewController ChildViewControllerForStatusBarHidden()
@@ -415,6 +417,10 @@ namespace Naxam.Controls.Platform.iOS
         void UpdateBarTextColor()
         {
             TabBar.TextColor = Tabbed.BarTextColor.ToUIColor();
+        }
+
+        void UpdateBarIndicatorColor() {
+            TabBar.IndicatorColor = Tabbed.BarIndicatorColor.ToUIColor();
         }
     }
 }
