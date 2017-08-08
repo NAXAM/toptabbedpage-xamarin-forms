@@ -72,6 +72,8 @@
     <Compile Include="TopTabbedRendererFormsBridge.cs" />
     <Compile Include="TopTabbedRendererPageViewController.cs" />
     <Compile Include="Utils\EffectUtilities.cs" />
+    <Compile Include="TopTabbedRendererSelection.cs" />
+    <Compile Include="TopTabbedRendererLayout.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.TopTabbedPage.Forms\Naxam.TopTabbedPage.Forms.csproj">

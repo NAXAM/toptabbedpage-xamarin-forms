@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Linq;
 using Naxam.Controls.Platform.iOS.Utils;
 using UIKit;
 using Xamarin.Forms;
@@ -16,7 +17,7 @@ namespace Naxam.Controls.Platform.iOS
         public UIView NativeView => View;
 
         public UIViewController ViewController => this;
-        
+
         public SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint)
         {
             return NativeView.GetSizeRequest(widthConstraint, heightConstraint);
@@ -26,7 +27,7 @@ namespace Naxam.Controls.Platform.iOS
         {
             VisualElementRenderer<VisualElement>.RegisterEffect(effect, View);
         }
-        
+
         public void SetElement(VisualElement element)
         {
             var oldElement = Element;
@@ -39,9 +40,10 @@ namespace Naxam.Controls.Platform.iOS
 
             OnPagesChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 
-            //TODO Call using reflection
-            //if (element != null)
-            //element.SendViewInitialized(NativeView);
+            if (element != null)
+            {
+                element.SendViewInitialized(NativeView);
+            }
 
             UpdateBarBackgroundColor();
             UpdateBarTextColor();
@@ -56,6 +58,17 @@ namespace Naxam.Controls.Platform.iOS
                 Element.Layout(new Rectangle(Element.X, Element.Y, size.Width, size.Height));
             else
                 _queuedSize = size;
+        }
+    }
+
+    static class ElementExtensions
+    {
+        public static void SendViewInitialized(this VisualElement element, UIView nativeView)
+        {
+            var method = typeof(Xamarin.Forms.Forms).GetMethods(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+                                                    .FirstOrDefault(x => x.Name == nameof(SendViewInitialized));
+
+            method.Invoke(null, new object[] { element, nativeView });
         }
     }
 }

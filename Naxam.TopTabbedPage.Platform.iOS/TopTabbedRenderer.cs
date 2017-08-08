@@ -72,30 +72,6 @@ namespace Naxam.Controls.Platform.iOS
             TabBar.TabsSelectionChanged += HandleTabsSelectionChanged;
         }
 
-        void HandleTabsSelectionChanged(object sender, TabsSelectionChangedEventArgs e)
-        {
-            MoveToByIndex((int)e.SelectedIndex);
-        }
-
-        void MoveToByIndex(int selectedIndex)
-        {
-            if (selectedIndex == lastSelectedIndex) return;
-
-            var direction = lastSelectedIndex < selectedIndex
-                             ? UIPageViewControllerNavigationDirection.Forward
-                             : UIPageViewControllerNavigationDirection.Reverse;
-
-            lastSelectedIndex = selectedIndex;
-
-            SelectedViewController = ViewControllers[lastSelectedIndex];
-
-            pageViewController.SetViewControllers(
-                new[] { SelectedViewController },
-                direction,
-                true, null
-            );
-        }
-
         public override void DidRotate(UIInterfaceOrientation fromInterfaceOrientation)
         {
             base.DidRotate(fromInterfaceOrientation);
@@ -113,35 +89,6 @@ namespace Naxam.Controls.Platform.iOS
         {
             base.ViewDidDisappear(animated);
             PageController.SendDisappearing();
-        }
-
-        public override void ViewDidLayoutSubviews()
-        {
-            base.ViewDidLayoutSubviews();
-
-            if (Element == null)
-                return;
-            
-            if (ParentViewController != null)
-			{
-				var parentFrame = ParentViewController.View.Frame;
-                Element.Layout(new Rectangle(0, 0, (float)parentFrame.Width, (float)(parentFrame.Height + parentFrame.Y)));
-            }
-            else if (!Element.Bounds.IsEmpty)
-            {
-                View.Frame = new System.Drawing.RectangleF((float)Element.X, (float)Element.Y, (float)Element.Width, (float)Element.Height);
-            }
-
-            var frame = ParentViewController != null ? ParentViewController.View.Frame : View.Frame;
-            PageController.ContainerArea = new Rectangle(0, 0, frame.Width, frame.Height);
-
-            if (!_queuedSize.IsZero)
-            {
-                Element.Layout(new Rectangle(Element.X, Element.Y, _queuedSize.Width, _queuedSize.Height));
-                _queuedSize = Size.Zero;
-            }
-
-            _loaded = true;
         }
 
         public override void ViewDidLoad()
@@ -222,27 +169,6 @@ namespace Naxam.Controls.Platform.iOS
             );
             pageViewController.WeakDataSource = this;
             pageViewController.DidFinishAnimating += HandlePageViewControllerDidFinishAnimating;
-        }
-
-        private void HandlePageViewControllerDidFinishAnimating(object sender, UIPageViewFinishedAnimationEventArgs e)
-        {
-            if (pageViewController.ViewControllers.Length == 0) return;
-
-            SelectedViewController = pageViewController.ViewControllers[0];
-            var index = ViewControllers.IndexOf(SelectedViewController);
-
-            TabBar.SelectedIndex = index;
-            lastSelectedIndex = index;
-        }
-
-        public override void DidMoveToParentViewController(UIViewController parent)
-        {
-            base.DidMoveToParentViewController(parent);
-			
-            var parentFrame = ParentViewController.View.Frame;
-			View.Frame = new System.Drawing.RectangleF((float)parentFrame.X, (float)parentFrame.Y, (float)parentFrame.Width, (float)parentFrame.Height);
-
-            tabBarHeight.Constant = 48;
         }
 
         protected override void Dispose(bool disposing)
@@ -336,9 +262,9 @@ namespace Naxam.Controls.Platform.iOS
             else if (e.PropertyName == TabbedPage.BarBackgroundColorProperty.PropertyName)
                 UpdateBarBackgroundColor();
             else if (e.PropertyName == TabbedPage.BarTextColorProperty.PropertyName)
-				UpdateBarTextColor();
-			else if (e.PropertyName == TopTabbedPage.BarIndicatorColorProperty.PropertyName)
-				UpdateBarIndicatorColor();
+                UpdateBarTextColor();
+            else if (e.PropertyName == TopTabbedPage.BarIndicatorColorProperty.PropertyName)
+                UpdateBarIndicatorColor();
         }
 
         public override UIViewController ChildViewControllerForStatusBarHidden()
@@ -419,7 +345,8 @@ namespace Naxam.Controls.Platform.iOS
             TabBar.TextColor = Tabbed.BarTextColor.ToUIColor();
         }
 
-        void UpdateBarIndicatorColor() {
+        void UpdateBarIndicatorColor()
+        {
             TabBar.IndicatorColor = Tabbed.BarIndicatorColor.ToUIColor();
         }
     }
