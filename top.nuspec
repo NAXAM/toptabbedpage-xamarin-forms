@@ -3,13 +3,13 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.TopTabbedPage.Forms</id>
-       <version>0.0.1</version>
+       <version>0.0.2-pre</version>
         <authors>NAXAM</authors>
         <owners>NAXAM COMPANY LIMITED</owners>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <title>Naxam - TopTabbedPage for Xamarin.Forms</title>
         <description>TopTabbedPage for Xamarin.Forms</description>
-        <releaseNotes>Initial version</releaseNotes>
+        <releaseNotes>Fix issue on layout and sizing</releaseNotes>
         <copyright>Copyright (c) 2017 NAXAM</copyright>
         <licenseUrl>https://opensource.org/licenses/Apache-2.0</licenseUrl>
         <projectUrl>https://github.com/naxam/xf-mapbox</projectUrl>
