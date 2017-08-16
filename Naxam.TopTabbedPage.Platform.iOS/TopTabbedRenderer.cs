@@ -101,57 +101,26 @@ namespace Naxam.Controls.Platform.iOS
             pageViewController.View.TranslatesAutoresizingMaskIntoConstraints = false;
             pageViewController.DidMoveToParentViewController(this);
 
-            var layoutAttributes = new[]
-            {
-                NSLayoutAttribute.Leading,
-                NSLayoutAttribute.Trailing
-            };
-            for (int i = 0; i < layoutAttributes.Length; i++)
-            {
-                View.AddConstraint(NSLayoutConstraint.Create(
-                    TabBar,
-                    layoutAttributes[i],
-                    NSLayoutRelation.Equal,
-                    View,
-                    layoutAttributes[i],
-                    1, 0
-                ));
-                View.AddConstraint(NSLayoutConstraint.Create(
-                    pageViewController.View,
-                    layoutAttributes[i],
-                    NSLayoutRelation.Equal,
-                    View,
-                    layoutAttributes[i],
-                    1, 0
-                ));
+            var views = NSDictionary.FromObjectsAndKeys(
+                new NSObject[] {
+                TabBar,
+                pageViewController.View
+            },
+                new NSObject[] {
+                (NSString) "tabbar",
+                (NSString) "content"
             }
+            );
 
-            View.AddConstraint(NSLayoutConstraint.Create(
-                pageViewController.View,
-                NSLayoutAttribute.Bottom,
-                NSLayoutRelation.Equal,
-                View,
-                NSLayoutAttribute.Bottom,
-                1, 0
-            ));
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-0-[tabbar]-0-[content]-0-|",
+                                                                    NSLayoutFormatOptions.AlignAllLeading | NSLayoutFormatOptions.AlignAllTrailing,
+                                                                    null,
+                                                                    views));
+			View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-0-[tabbar]-0-|",
+                                                                    0,
+                                                                    null,
+																	views));
 
-            View.AddConstraint(NSLayoutConstraint.Create(
-                TabBar,
-                NSLayoutAttribute.Top,
-                NSLayoutRelation.Equal,
-                View,
-                NSLayoutAttribute.Top,
-                1, 0
-            ));
-
-            View.AddConstraint(NSLayoutConstraint.Create(
-                pageViewController.View,
-                NSLayoutAttribute.Top,
-                NSLayoutRelation.Equal,
-                TabBar,
-                NSLayoutAttribute.Bottom,
-                1, 0
-            ));
 
             tabBarHeight = NSLayoutConstraint.Create(
                 TabBar,

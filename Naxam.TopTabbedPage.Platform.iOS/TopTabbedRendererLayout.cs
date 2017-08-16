@@ -14,7 +14,7 @@ namespace Naxam.Controls.Platform.iOS
 
 			tabBarHeight.Constant = 48;
 
-			SetElementSize(new Size(parentFrame.Width, parentFrame.Height));
+			//SetElementSize(new Size(parentFrame.Width, parentFrame.Height));
 		}
 
 		public override void ViewDidLayoutSubviews()
@@ -23,7 +23,6 @@ namespace Naxam.Controls.Platform.iOS
 
 			if (Element == null)
 				return;
-
             if (!Element.Bounds.IsEmpty)
 			{
 				View.Frame = new System.Drawing.RectangleF((float)Element.X, (float)Element.Y, (float)Element.Width, (float)Element.Height);
@@ -39,6 +38,8 @@ namespace Naxam.Controls.Platform.iOS
 				Element.Layout(new Rectangle(Element.X, Element.Y, _queuedSize.Width, _queuedSize.Height));
 				_queuedSize = Size.Zero;
 			}
+
+            pageViewController.SetViewControllers(pageViewController.ViewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
 
 			_loaded = true;
 		}
