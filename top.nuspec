@@ -3,7 +3,7 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.TopTabbedPage.Forms</id>
-       <version>0.0.2-pre</version>
+       <version>0.0.3-pre</version>
         <authors>NAXAM</authors>
         <owners>NAXAM COMPANY LIMITED</owners>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
