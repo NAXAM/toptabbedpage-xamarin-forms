@@ -40,7 +40,6 @@ namespace Naxam.Controls.Platform.iOS
 
         protected UIViewController SelectedViewController;
         protected IList<UIViewController> ViewControllers;
-        protected int SelectedIndex;
 
         protected IPageController PageController
         {
@@ -162,11 +161,16 @@ namespace Naxam.Controls.Platform.iOS
             );
             TabBar.AddConstraint(tabBarHeight);
 
-            pageViewController.SetViewControllers(
-                new[] { ViewControllers[0] },
-                UIPageViewControllerNavigationDirection.Forward,
-                true, null
-            );
+            if (pageViewController.ViewControllers.Length == 0 
+                && lastSelectedIndex >= 0 || lastSelectedIndex < ViewControllers.Count)
+            {
+				pageViewController.SetViewControllers(
+                    new[] { ViewControllers[lastSelectedIndex] },
+    			   UIPageViewControllerNavigationDirection.Forward,
+    			   true, null
+    		    );
+            }
+           
             pageViewController.WeakDataSource = this;
             pageViewController.DidFinishAnimating += HandlePageViewControllerDidFinishAnimating;
         }

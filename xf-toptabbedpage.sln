@@ -74,4 +74,9 @@ Global
 		{20B056FC-3A00-49EA-A7EA-C396F8146588} = {56550A2F-963F-4972-A19A-E5BD2E382740}
 		{00130AEB-B29A-47E9-9539-40B70AD221E2} = {56550A2F-963F-4972-A19A-E5BD2E382740}
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+	EndGlobalSection
 EndGlobal

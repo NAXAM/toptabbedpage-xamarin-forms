@@ -61,19 +61,50 @@ namespace TopTabbedPageQs
 					Margin = new Thickness(16)
 				}
 			});
-			tabs.Children.Add(new ContentPage
-			{
-				Title = "Tab 4",
-				BackgroundColor = Color.LightYellow,
-				Content = new Label
-				{
-					HorizontalTextAlignment = TextAlignment.Center,
-					VerticalTextAlignment = TextAlignment.Center,
-					Text = "TopTabbedPage is created while creating MyRide app showcase.",
+
+            {
+                var stack = new StackLayout()
+                {
+                    Orientation = StackOrientation.Vertical,
+                    VerticalOptions = new LayoutOptions(LayoutAlignment.Center, false),
+                    HorizontalOptions = new LayoutOptions(LayoutAlignment.Center, false)
+                };
+                stack.Children.Add(new Label
+                {
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    Text = "TopTabbedPage is created while creating MyRide app showcase.",
                     TextColor = Color.DarkBlue,
-					Margin = new Thickness(16)
-				}
-			});
+                    Margin = new Thickness(16)
+                });
+                var button = new Button()
+                {
+                    Text = "Navigate",
+                    TextColor = Color.DarkBlue,
+                    Margin = new Thickness(16)
+                };
+                button.Clicked += DidClickOnNavigateButton;
+                stack.Children.Add(button);
+                tabs.Children.Add(new ContentPage
+                {
+                    Title = "Tab 4",
+                    BackgroundColor = Color.LightYellow,
+                    Content = stack
+                });
+            }
+			//tabs.Children.Add(new ContentPage
+			//{
+			//	Title = "Tab 4",
+			//	BackgroundColor = Color.LightYellow,
+			//	Content = new Label
+			//	{
+			//		HorizontalTextAlignment = TextAlignment.Center,
+			//		VerticalTextAlignment = TextAlignment.Center,
+			//		Text = "TopTabbedPage is created while creating MyRide app showcase.",
+   //                 TextColor = Color.DarkBlue,
+			//		Margin = new Thickness(16)
+			//	}
+			//});
 			tabs.Children.Add(new ContentPage
 			{
 				Title = "Tab 5",
@@ -93,6 +124,45 @@ namespace TopTabbedPageQs
             };
 
 	        //MainPage = tabs;
+        }
+
+        private async void DidClickOnNavigateButton(object sender, EventArgs e)
+        {
+			var tabs = new TopTabbedPage
+			{
+				Title = "Second Top Tabs",
+				BarBackgroundColor = Color.FromHex("9C27B0"),
+				//BarIndicatorColor = Color.DeepPink,
+				//BarTextColor = Color.DeepPink
+			};
+			tabs.Children.Add(new ContentPage
+			{
+				Title = "Tab 1",
+				BackgroundColor = Color.Aqua,
+				Content = new Label
+				{
+					HorizontalTextAlignment = TextAlignment.Center,
+					VerticalTextAlignment = TextAlignment.Center,
+					Text = "TopTabbedPage - A Xamarin.Forms page with tabs at the top.",
+					TextColor = Color.DarkCyan,
+					Margin = new Thickness(16)
+				}
+			});
+			tabs.Children.Add(new ContentPage
+			{
+				Title = "Tab 2",
+				BackgroundColor = Color.Beige,
+				Content = new Label
+				{
+					HorizontalTextAlignment = TextAlignment.Center,
+					VerticalTextAlignment = TextAlignment.Center,
+					Text = "TabsView internally wrapps MDTabBar.",
+					TextColor = Color.Green,
+					Margin = new Thickness(16)
+				}
+			});
+            tabs.CurrentPage = tabs.Children[1];
+            await MainPage.Navigation.PushAsync(tabs);
         }
     }
 }
