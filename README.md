@@ -1,11 +1,22 @@
-TopTabbedPage - Xamarin.Forms control
-=====
+<img src="./art/repo_header.png" alt="TopTabbedPage - A Xamarin.Forms control" width="728" />
+
+# TopTabbedPage
 
 A Xamarin.Forms page based TabbedPage to show tabs at top on iOS.
 
-
 |![Tab 1](./art/tab1.png)|![Tab 5](./art/tab5.png)|
 |:---:|:---:|
+
+
+## About
+This project is maintained by Naxam Co.,Ltd.<br>
+We specialize in developing mobile applications using Xamarin and native technology stack.<br>
+
+**Looking for developers for your project?**<br>
+
+<a href="http://naxam.net/#contact"> 
+<img src="https://github.com/NAXAM/naxam.github.io/blob/master/assets/img/hire_button.png?raw=true" height="36"></a> <br>
+
 ## Installation
 
     Install-Package Naxam.TopTabbedPage.Forms
@@ -28,3 +39,8 @@ This control is used the same as standard tabbed page, except it has one more op
     <views:Page2 />
 </forms:TopTabbedPage>
 ```
+
+## License
+
+TopTabbedPage is released under the MIT license.
+See [LICENSE](./LICENSE) for details.
