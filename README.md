@@ -14,7 +14,7 @@ We specialize in developing mobile applications using Xamarin and native technol
 
 **Looking for developers for your project?**<br>
 
-<a href="http://naxam.net/#contact"> 
+<a href="mailto:tuyen@naxam.net"> 
 <img src="https://github.com/NAXAM/naxam.github.io/blob/master/assets/img/hire_button.png?raw=true" height="36"></a> <br>
 
 ## Installation
@@ -40,7 +40,10 @@ This control is used the same as standard tabbed page, except it has one more op
 </forms:TopTabbedPage>
 ```
 
+## Credits
+This library currently uses `MDTabBar` from [MaterialControls](https://github.com/fpt-software/Material-Controls-For-iOS) library.
+
 ## License
 
-TopTabbedPage is released under the MIT license.
+TopTabbedPage is released under the Apache License license.
 See [LICENSE](./LICENSE) for details.
