@@ -40,6 +40,11 @@ This control is used the same as standard tabbed page, except it has one more op
 </forms:TopTabbedPage>
 ```
 
+Add this line to your iOS `AppDelegate.cs` file
+```c#
+TopTabbedRenderer.Init();
+```
+
 ## Credits
 This library currently uses `MDTabBar` from [MaterialControls](https://github.com/fpt-software/Material-Controls-For-iOS) library.
 

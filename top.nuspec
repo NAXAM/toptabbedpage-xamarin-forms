@@ -3,7 +3,7 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.TopTabbedPage.Forms</id>
-       <version>0.0.3-pre</version>
+       <version>0.0.3</version>
         <authors>NAXAM</authors>
         <owners>NAXAM COMPANY LIMITED</owners>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -13,10 +13,11 @@
         <copyright>Copyright (c) 2017 NAXAM</copyright>
         <licenseUrl>https://opensource.org/licenses/Apache-2.0</licenseUrl>
         <projectUrl>https://github.com/naxam/xf-mapbox</projectUrl>
-        <iconUrl>https://avatars3.githubusercontent.com/u/25535951</iconUrl>
+        <iconUrl>https://avatars1.githubusercontent.com/u/25535951</iconUrl>
         <tags>Xamarin.Forms, Xamarin.iOS, toptabbedpage, toptabs, top-tabbed-page, top-tabs</tags>
         <dependencies>
             <dependency id="Xamarin.Forms" version="2.3.4.247" />
+            <dependency id="MaterialControls" version="1.2.2" />
         </dependencies>
     </metadata>
     <!-- Optional 'files' node -->
