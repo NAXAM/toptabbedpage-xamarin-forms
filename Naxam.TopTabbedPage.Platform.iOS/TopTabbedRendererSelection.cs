@@ -19,6 +19,8 @@ namespace Naxam.Controls.Platform.iOS
         void HandleTabsSelectionChanged(object sender, TabsSelectionChangedEventArgs e)
         {
             MoveToByIndex((int)e.SelectedIndex);
+            var navigationItem = this.NavigationController.TopViewController.NavigationItem;
+            navigationItem.SetRightBarButtonItems(newChild.ToolbarItems.Select(x=>x.ToUIBarButtonItem()).ToArray(), false);            
         }
 
         void MoveToByIndex(int selectedIndex, bool forced = false)
