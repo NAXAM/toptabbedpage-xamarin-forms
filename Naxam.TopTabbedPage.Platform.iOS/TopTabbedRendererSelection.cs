@@ -1,5 +1,7 @@
 ﻿using System;
 using UIKit;
+using System.Linq;
+using Xamarin.Forms.Platform.iOS;
 
 namespace Naxam.Controls.Platform.iOS
 {
@@ -19,8 +21,9 @@ namespace Naxam.Controls.Platform.iOS
         void HandleTabsSelectionChanged(object sender, TabsSelectionChangedEventArgs e)
         {
             MoveToByIndex((int)e.SelectedIndex);
+            var newChild = Tabbed.Children[(int)e.SelectedIndex];
             var navigationItem = this.NavigationController.TopViewController.NavigationItem;
-            navigationItem.SetRightBarButtonItems(newChild.ToolbarItems.Select(x=>x.ToUIBarButtonItem()).ToArray(), false);            
+            navigationItem.SetRightBarButtonItems(newChild.ToolbarItems.Select(x=>x.ToUIBarButtonItem()).ToArray(), false);
         }
 
         void MoveToByIndex(int selectedIndex, bool forced = false)
