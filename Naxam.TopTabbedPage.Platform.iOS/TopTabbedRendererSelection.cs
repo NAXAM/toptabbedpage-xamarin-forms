@@ -2,6 +2,8 @@
 using UIKit;
 using System.Linq;
 using Xamarin.Forms.Platform.iOS;
+using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace Naxam.Controls.Platform.iOS
 {
@@ -16,14 +18,12 @@ namespace Naxam.Controls.Platform.iOS
 
             TabBar.SelectedIndex = index;
             lastSelectedIndex = index;
+            UpdateToolbarItems(index);
         }
 
         void HandleTabsSelectionChanged(object sender, TabsSelectionChangedEventArgs e)
         {
             MoveToByIndex((int)e.SelectedIndex);
-            var newChild = Tabbed.Children[(int)e.SelectedIndex];
-            var navigationItem = this.NavigationController.TopViewController.NavigationItem;
-            navigationItem.SetRightBarButtonItems(newChild.ToolbarItems.Select(x=>x.ToUIBarButtonItem()).ToArray(), false);
         }
 
         void MoveToByIndex(int selectedIndex, bool forced = false)
@@ -37,22 +37,38 @@ namespace Naxam.Controls.Platform.iOS
             lastSelectedIndex = selectedIndex;
 
             SelectedViewController = ViewControllers[lastSelectedIndex];
+
+            UpdateToolbarItems(selectedIndex);
+
             InvokeOnMainThread(() =>
             {
                 pageViewController.SetViewControllers(
                     new[] { SelectedViewController },
                     direction,
-                    true, (finished) => {
-                    if (pageViewController.ViewControllers.Length == 0 
-                        || pageViewController.ViewControllers[0] != SelectedViewController) { //Sometimes setViewControllers doesn't work as expected
+                    true, (finished) =>
+                    {
+                        if (pageViewController.ViewControllers.Length == 0
+                            || pageViewController.ViewControllers[0] != SelectedViewController)
+                        { //Sometimes setViewControllers doesn't work as expected
                             pageViewController.SetViewControllers(
                             new[] { SelectedViewController },
                             direction,
                             false, null);
+                        }
                     }
-                }
                 );
             });
+        }
+
+        void UpdateToolbarItems(int selectedIndex)
+        {
+            var toolbarItems = new List<ToolbarItem>(Tabbed.ToolbarItems);
+
+            var newChild = Tabbed.Children[selectedIndex];
+            var navigationItem = this.NavigationController.TopViewController.NavigationItem;
+            toolbarItems.AddRange(newChild.ToolbarItems);
+
+            navigationItem.SetRightBarButtonItems(toolbarItems.Select(x => x.ToUIBarButtonItem()).ToArray(), false);
         }
     }
 }

@@ -15,52 +15,53 @@ namespace TopTabbedPageQs
             {
                 Title = "Top Tabs",
                 BarBackgroundColor = Color.FromHex("9C27B0"),
-				//BarIndicatorColor = Color.DeepPink,
-				//BarTextColor = Color.DeepPink
-			};
+                //BarIndicatorColor = Color.DeepPink,
+                //BarTextColor = Color.DeepPink
+            };
             tabs.Children.Add(new MyPage
-			{
-				Title = "My Page",
-				BackgroundColor = Color.Aquamarine
-			});
-            tabs.Children.Add(new ContentPage {
+            {
+                Title = "My Page",
+                BackgroundColor = Color.Aquamarine
+            });
+            tabs.Children.Add(new ContentPage
+            {
                 Title = "Tab 1",
-				BackgroundColor = Color.Aqua,
-				Content = new Label
-				{
-					HorizontalTextAlignment = TextAlignment.Center,
-					VerticalTextAlignment = TextAlignment.Center,
-					Text = "TopTabbedPage - A Xamarin.Forms page with tabs at the top.",
+                BackgroundColor = Color.Aqua,
+                Content = new Label
+                {
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    Text = "TopTabbedPage - A Xamarin.Forms page with tabs at the top.",
                     TextColor = Color.DarkCyan,
-					Margin = new Thickness(16)
-				}
-			});
-			tabs.Children.Add(new ContentPage
-			{
-				Title = "Tab 2",
-				BackgroundColor = Color.Beige,
-				Content = new Label
-				{
-					HorizontalTextAlignment = TextAlignment.Center,
-					VerticalTextAlignment = TextAlignment.Center,
-					Text = "TabsView internally wrapps MDTabBar.",
+                    Margin = new Thickness(16)
+                }
+            });
+            tabs.Children.Add(new ContentPage
+            {
+                Title = "Tab 2",
+                BackgroundColor = Color.Beige,
+                Content = new Label
+                {
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    Text = "TabsView internally wrapps MDTabBar.",
                     TextColor = Color.Green,
-					Margin = new Thickness(16)
-				}
-			});
-			tabs.Children.Add(new ContentPage
-			{
-				Title = "Tab 3",
-				BackgroundColor = Color.BlueViolet,
-				Content = new Label
-				{
-					HorizontalTextAlignment = TextAlignment.Center,
-					VerticalTextAlignment = TextAlignment.Center,
-					Text = "TopTabbedPage could be embedded inside a NavigationPage.",
+                    Margin = new Thickness(16)
+                }
+            });
+            tabs.Children.Add(new ContentPage
+            {
+                Title = "Tab 3",
+                BackgroundColor = Color.BlueViolet,
+                Content = new Label
+                {
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    Text = "TopTabbedPage could be embedded inside a NavigationPage.",
                     TextColor = Color.Aqua,
-					Margin = new Thickness(16)
-				}
-			});
+                    Margin = new Thickness(16)
+                }
+            });
 
             {
                 var stack = new StackLayout()
@@ -89,78 +90,91 @@ namespace TopTabbedPageQs
                 {
                     Title = "Tab 4",
                     BackgroundColor = Color.LightYellow,
-                    Content = stack
+                    Content = stack,
                 });
             }
-			//tabs.Children.Add(new ContentPage
-			//{
-			//	Title = "Tab 4",
-			//	BackgroundColor = Color.LightYellow,
-			//	Content = new Label
-			//	{
-			//		HorizontalTextAlignment = TextAlignment.Center,
-			//		VerticalTextAlignment = TextAlignment.Center,
-			//		Text = "TopTabbedPage is created while creating MyRide app showcase.",
-   //                 TextColor = Color.DarkBlue,
-			//		Margin = new Thickness(16)
-			//	}
-			//});
-			tabs.Children.Add(new ContentPage
-			{
-				Title = "Tab 5",
-				BackgroundColor = Color.Bisque,
-                Content = new Label {
+            //tabs.Children.Add(new ContentPage
+            //{
+            //	Title = "Tab 4",
+            //	BackgroundColor = Color.LightYellow,
+            //	Content = new Label
+            //	{
+            //		HorizontalTextAlignment = TextAlignment.Center,
+            //		VerticalTextAlignment = TextAlignment.Center,
+            //		Text = "TopTabbedPage is created while creating MyRide app showcase.",
+            //                 TextColor = Color.DarkBlue,
+            //		Margin = new Thickness(16)
+            //	}
+            //});
+            tabs.Children.Add(new ContentPage
+            {
+                Title = "Tab 5",
+                BackgroundColor = Color.Bisque,
+                Content = new Label
+                {
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Center,
                     Text = "TopTabbedPage is a product developed by NAXAM",
                     TextColor = Color.DarkGreen,
                     Margin = new Thickness(16)
                 }
-			});
+            });
 
-            MainPage = new NavigationPage(tabs) {
+            tabs.ToolbarItems.Add(new ToolbarItem
+            {
+                Text = "Main"
+            });
+
+            var m = new NavigationPage(tabs)
+            {
                 BarBackgroundColor = Color.FromHex("9C27B0"),
                 BarTextColor = Color.White
             };
+            m.PropertyChanged += (sender, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine(e.PropertyName);
+            };
 
-	        //MainPage = tabs;
+            MainPage = m;
+
+            //MainPage = tabs;
         }
 
         private async void DidClickOnNavigateButton(object sender, EventArgs e)
         {
-			var tabs = new TopTabbedPage
-			{
-				Title = "Second Top Tabs",
-				BarBackgroundColor = Color.FromHex("9C27B0"),
-				//BarIndicatorColor = Color.DeepPink,
-				//BarTextColor = Color.DeepPink
-			};
-			tabs.Children.Add(new ContentPage
-			{
-				Title = "Tab 1",
-				BackgroundColor = Color.Aqua,
-				Content = new Label
-				{
-					HorizontalTextAlignment = TextAlignment.Center,
-					VerticalTextAlignment = TextAlignment.Center,
-					Text = "TopTabbedPage - A Xamarin.Forms page with tabs at the top.",
-					TextColor = Color.DarkCyan,
-					Margin = new Thickness(16)
-				}
-			});
-			tabs.Children.Add(new ContentPage
-			{
-				Title = "Tab 2",
-				BackgroundColor = Color.Beige,
-				Content = new Label
-				{
-					HorizontalTextAlignment = TextAlignment.Center,
-					VerticalTextAlignment = TextAlignment.Center,
-					Text = "TabsView internally wrapps MDTabBar.",
-					TextColor = Color.Green,
-					Margin = new Thickness(16)
-				}
-			});
+            var tabs = new TopTabbedPage
+            {
+                Title = "Second Top Tabs",
+                BarBackgroundColor = Color.FromHex("9C27B0"),
+                //BarIndicatorColor = Color.DeepPink,
+                //BarTextColor = Color.DeepPink
+            };
+            tabs.Children.Add(new ContentPage
+            {
+                Title = "Tab 1",
+                BackgroundColor = Color.Aqua,
+                Content = new Label
+                {
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    Text = "TopTabbedPage - A Xamarin.Forms page with tabs at the top.",
+                    TextColor = Color.DarkCyan,
+                    Margin = new Thickness(16)
+                }
+            });
+            tabs.Children.Add(new ContentPage
+            {
+                Title = "Tab 2",
+                BackgroundColor = Color.Beige,
+                Content = new Label
+                {
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    Text = "TabsView internally wrapps MDTabBar.",
+                    TextColor = Color.Green,
+                    Margin = new Thickness(16)
+                }
+            });
             tabs.CurrentPage = tabs.Children[1];
             await MainPage.Navigation.PushAsync(tabs);
         }

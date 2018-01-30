@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TopTabbedPageQs.MyPage">
-	<Grid>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="TopTabbedPageQs.MyPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Text="Child" />
+    </ContentPage.ToolbarItems>
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="40" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="40" />
         </Grid.RowDefinitions>
-
-        <Label 
+        <Label
             Grid.Row="1"
             TextColor="Fuchsia"
-            Text="This is a bottom label"
-            />
+            Text="This is a bottom label" />
     </Grid>
 </ContentPage>

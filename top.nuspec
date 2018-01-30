@@ -3,21 +3,21 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.TopTabbedPage.Forms</id>
-       <version>0.0.3.1</version>
+       <version>0.0.3.2</version>
         <authors>NAXAM</authors>
         <owners>NAXAM COMPANY LIMITED</owners>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <title>Naxam - TopTabbedPage for Xamarin.Forms</title>
         <description>TopTabbedPage for Xamarin.Forms</description>
-        <releaseNotes>Update ToolBarItems of TabbedPage from Child when Page Changes</releaseNotes>
+        <releaseNotes>Join ToolbarItems of current page and tabbedpage</releaseNotes>
         <copyright>Copyright (c) 2017 NAXAM</copyright>
         <licenseUrl>https://opensource.org/licenses/Apache-2.0</licenseUrl>
-        <projectUrl>https://github.com/naxam/xf-mapbox</projectUrl>
+        <projectUrl>https://github.com/NAXAM/toptabbedpage-xamarin-forms</projectUrl>
         <iconUrl>https://avatars1.githubusercontent.com/u/25535951</iconUrl>
         <tags>Xamarin.Forms, Xamarin.iOS, toptabbedpage, toptabs, top-tabbed-page, top-tabs</tags>
         <dependencies>
             <group>
-                <dependency id="Xamarin.Forms" version="2.3.4.247" />
+                <dependency id="Xamarin.Forms" version="2.5.0.122203" />
             </group>
             <group targetFramework="xamarinios">
                 <dependency id="MaterialControls" version="1.2.2" />
