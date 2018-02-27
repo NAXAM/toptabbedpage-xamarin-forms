@@ -103,6 +103,11 @@ namespace Naxam.Controls.Platform.iOS
             _tabBar.SetItems(titles.Select(x => new NSString(x)).Cast<NSObject>().ToArray());
         }
 
+        internal void ReplaceItem(string title, int index)
+        {
+           _tabBar.ReplaceItem(new NSString(title), (nuint)index);
+        }
+
         public void DidChangeSelectedIndex(MDTabBar tabBar, nuint selectedIndex)
         {
             TabsSelectionChanged?.Invoke(this, new TabsSelectionChangedEventArgs(selectedIndex));

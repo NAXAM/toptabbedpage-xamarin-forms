@@ -171,27 +171,13 @@ namespace Naxam.Controls.Platform.iOS
 
         void OnPagePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == Page.TitleProperty.PropertyName)
-            {
-                var page = (Page)sender;
-                var renderer = Platform.GetRenderer(page);
-                if (renderer == null)
-                    return;
+           if (e.PropertyName != Page.TitleProperty.PropertyName)
+              return;
 
-                //TODO Update title for specific controller
-                //if (renderer.ViewController.TabBarItem != null)
-                //renderer.ViewController.TabBarItem.Title = page.Title;
-            }
-            else if (e.PropertyName == Page.IconProperty.PropertyName ||
-                     e.PropertyName == Page.TitleProperty.PropertyName)
-            {
-                var page = (Page)sender;
+           if (!(sender is Page page))
+              return;
 
-                IVisualElementRenderer renderer = Platform.GetRenderer(page);
-
-                if (renderer?.ViewController.TabBarItem == null)
-                    return;
-            }
+           TabBar.ReplaceItem(page.Title, Tabbed.Children.IndexOf(page));
         }
 
         void OnPagesChanged(object sender, NotifyCollectionChangedEventArgs e)
