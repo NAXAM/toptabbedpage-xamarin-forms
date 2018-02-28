@@ -3,13 +3,13 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.TopTabbedPage.Forms</id>
-       <version>0.0.3.2</version>
+       <version>0.0.3.3</version>
         <authors>NAXAM</authors>
         <owners>NAXAM COMPANY LIMITED</owners>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <title>Naxam - TopTabbedPage for Xamarin.Forms</title>
         <description>TopTabbedPage for Xamarin.Forms</description>
-        <releaseNotes>Join ToolbarItems of current page and tabbedpage</releaseNotes>
+        <releaseNotes>Update page title on tab (#9)</releaseNotes>
         <copyright>Copyright (c) 2017 NAXAM</copyright>
         <licenseUrl>https://opensource.org/licenses/Apache-2.0</licenseUrl>
         <projectUrl>https://github.com/NAXAM/toptabbedpage-xamarin-forms</projectUrl>
