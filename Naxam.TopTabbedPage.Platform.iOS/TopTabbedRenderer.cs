@@ -174,7 +174,7 @@ namespace Naxam.Controls.Platform.iOS
            if (e.PropertyName != Page.TitleProperty.PropertyName)
               return;
 
-           if (!(sender is Page page))
+           if (!(sender is Page page) || page.Title is null)
               return;
 
            TabBar.ReplaceItem(page.Title, Tabbed.Children.IndexOf(page));
