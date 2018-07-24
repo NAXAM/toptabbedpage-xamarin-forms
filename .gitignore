@@ -39,3 +39,4 @@ Thumbs.db
 # dotCover
 *.dotCover
 .idea
+.vs
