@@ -48,7 +48,7 @@ namespace Naxam.Controls.Platform.iOS
                     var failed = pageViewController.ViewControllers.Length == 0
                                                    || pageViewController.ViewControllers[0] != SelectedViewController;
                     if (failed)
-                    { 
+                    {
                         //Sometimes setViewControllers doesn't work as expected
                         pageViewController.SetViewControllers(
                             new[] { SelectedViewController },
@@ -61,6 +61,8 @@ namespace Naxam.Controls.Platform.iOS
 
         void UpdateToolbarItems(int selectedIndex)
         {
+            if (NavigationController == null) return;
+
             var toolbarItems = new List<ToolbarItem>(Tabbed.ToolbarItems);
 
             var newChild = Tabbed.Children[selectedIndex];

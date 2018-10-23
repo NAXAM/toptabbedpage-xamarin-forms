@@ -14,10 +14,11 @@ namespace TopTabbedPageQs
             var tabs = new TopTabbedPage
             {
                 Title = "TopTabs",
-                BarBackgroundColor = Color.FromHex("9C27B0"),
+                //BarBackgroundColor = Color.FromHex("9C27B0"),
                 SwipeEnabled = false,
                 //BarIndicatorColor = Color.DeepPink,
                 //BarTextColor = Color.DeepPink
+                Style = Resources["TabsPage"] as Style
             };
             tabs.Children.Add(new MyPage
             {
