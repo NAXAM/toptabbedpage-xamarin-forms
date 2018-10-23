@@ -40,24 +40,23 @@ namespace Naxam.Controls.Platform.iOS
 
             UpdateToolbarItems(selectedIndex);
 
-            InvokeOnMainThread(() =>
-            {
-                pageViewController.SetViewControllers(
-                    new[] { SelectedViewController },
-                    direction,
-                    true, (finished) =>
-                    {
-                        if (pageViewController.ViewControllers.Length == 0
-                            || pageViewController.ViewControllers[0] != SelectedViewController)
-                        { //Sometimes setViewControllers doesn't work as expected
-                            pageViewController.SetViewControllers(
+            pageViewController.SetViewControllers(
+                new[] { SelectedViewController },
+                direction,
+                false, (finished) =>
+                {
+                    var failed = pageViewController.ViewControllers.Length == 0
+                                                   || pageViewController.ViewControllers[0] != SelectedViewController;
+                    if (failed)
+                    { 
+                        //Sometimes setViewControllers doesn't work as expected
+                        pageViewController.SetViewControllers(
                             new[] { SelectedViewController },
                             direction,
                             false, null);
-                        }
                     }
-                );
-            });
+                }
+            );
         }
 
         void UpdateToolbarItems(int selectedIndex)

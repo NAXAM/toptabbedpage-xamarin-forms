@@ -113,13 +113,17 @@ namespace Naxam.Controls.Platform.iOS
             );
 
             View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-0-[tabbar]-0-[content]-0-|",
-                                                                    NSLayoutFormatOptions.AlignAllLeading | NSLayoutFormatOptions.AlignAllTrailing,
-                                                                    null,
-                                                                    views));
-			View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-0-[tabbar]-0-|",
                                                                     0,
                                                                     null,
-																	views));
+                                                                    views));
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-0-[tabbar]-0-|",
+                                                                    0,
+                                                                    null,
+                                                                    views));
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-0-[content]-0-|",
+                                                                    0,
+                                                                    null,
+                                                                    views));
 
 
             tabBarHeight = NSLayoutConstraint.Create(
@@ -130,16 +134,16 @@ namespace Naxam.Controls.Platform.iOS
             );
             TabBar.AddConstraint(tabBarHeight);
 
-            if (pageViewController.ViewControllers.Length == 0 
+            if (pageViewController.ViewControllers.Length == 0
                 && lastSelectedIndex >= 0 || lastSelectedIndex < ViewControllers.Count)
             {
-				pageViewController.SetViewControllers(
+                pageViewController.SetViewControllers(
                     new[] { ViewControllers[lastSelectedIndex] },
-    			   UIPageViewControllerNavigationDirection.Forward,
-    			   true, null
-    		    );
+                   UIPageViewControllerNavigationDirection.Forward,
+                   true, null
+                );
             }
-           
+
             pageViewController.WeakDataSource = this;
             pageViewController.DidFinishAnimating += HandlePageViewControllerDidFinishAnimating;
         }
@@ -171,13 +175,13 @@ namespace Naxam.Controls.Platform.iOS
 
         void OnPagePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-           if (e.PropertyName != Page.TitleProperty.PropertyName)
-              return;
+            if (e.PropertyName != Page.TitleProperty.PropertyName)
+                return;
 
-           if (!(sender is Page page) || page.Title is null)
-              return;
+            if (!(sender is Page page) || page.Title is null)
+                return;
 
-           TabBar.ReplaceItem(page.Title, Tabbed.Children.IndexOf(page));
+            TabBar.ReplaceItem(page.Title, Tabbed.Children.IndexOf(page));
         }
 
         void OnPagesChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -254,8 +258,11 @@ namespace Naxam.Controls.Platform.iOS
                 var v = child as VisualElement;
                 if (v == null)
                     continue;
-                if (Platform.GetRenderer(v) != null)
-                    list.Add(Platform.GetRenderer(v).ViewController);
+
+                var renderer = Platform.GetRenderer(v);
+                if (renderer == null) continue;
+
+                list.Add(renderer.ViewController);
 
                 titles.Add(Tabbed.Children[i].Title);
             }
@@ -272,6 +279,7 @@ namespace Naxam.Controls.Platform.iOS
                 Platform.SetRenderer(page, renderer);
             }
 
+            page.PropertyChanged -= OnPagePropertyChanged;
             page.PropertyChanged += OnPagePropertyChanged;
         }
 
