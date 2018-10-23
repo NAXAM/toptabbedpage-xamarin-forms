@@ -30,6 +30,13 @@ namespace Naxam.Controls.Platform.iOS
         {
             if (selectedIndex == lastSelectedIndex && !forced) return;
 
+            var nextPage = Tabbed.Children.ElementAt(selectedIndex);
+            if (Tabbed.CurrentPage != nextPage)
+            {
+                Tabbed.CurrentPage = nextPage;
+                return;
+            }
+
             var direction = lastSelectedIndex < selectedIndex
                              ? UIPageViewControllerNavigationDirection.Forward
                              : UIPageViewControllerNavigationDirection.Reverse;
