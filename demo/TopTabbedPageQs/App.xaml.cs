@@ -13,7 +13,7 @@ namespace TopTabbedPageQs
 
             var tabs = new TopTabbedPage
             {
-                Title = "Top Tabs",
+                Title = "TopTabs",
                 BarBackgroundColor = Color.FromHex("9C27B0"),
                 SwipeEnabled = false,
                 //BarIndicatorColor = Color.DeepPink,
