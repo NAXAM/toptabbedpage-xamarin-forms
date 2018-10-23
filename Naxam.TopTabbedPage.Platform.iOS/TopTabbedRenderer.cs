@@ -101,6 +101,7 @@ namespace Naxam.Controls.Platform.iOS
             pageViewController.View.TranslatesAutoresizingMaskIntoConstraints = false;
             pageViewController.DidMoveToParentViewController(this);
 
+
             var views = NSDictionary.FromObjectsAndKeys(
                 new NSObject[] {
                 TabBar,
@@ -144,7 +145,7 @@ namespace Naxam.Controls.Platform.iOS
                 );
             }
 
-            pageViewController.WeakDataSource = this;
+            UpdateSwipe(Tabbed.SwipeEnabled);
             pageViewController.DidFinishAnimating += HandlePageViewControllerDidFinishAnimating;
         }
 
@@ -152,11 +153,21 @@ namespace Naxam.Controls.Platform.iOS
         {
             if (disposing)
             {
-                PageController.SendDisappearing();
-                Tabbed.PropertyChanged -= OnPropertyChanged;
-                Tabbed.PagesChanged -= OnPagesChanged;
-                TabBar.TabsSelectionChanged -= HandleTabsSelectionChanged;
-                pageViewController.DidFinishAnimating -= HandlePageViewControllerDidFinishAnimating;
+                PageController?.SendDisappearing();
+
+                if (Tabbed != null)
+                {
+                    Tabbed.PropertyChanged -= OnPropertyChanged;
+                    Tabbed.PagesChanged -= OnPagesChanged;
+                    TabBar.TabsSelectionChanged -= HandleTabsSelectionChanged;
+                }
+
+                if (pageViewController != null)
+                {
+                    pageViewController.WeakDataSource = null;
+                    pageViewController.DidFinishAnimating -= HandlePageViewControllerDidFinishAnimating;
+                    pageViewController?.Dispose();
+                }
             }
 
             base.Dispose(disposing);
@@ -223,11 +234,21 @@ namespace Naxam.Controls.Platform.iOS
                 TabBar.SelectedIndex = index;
             }
             else if (e.PropertyName == TabbedPage.BarBackgroundColorProperty.PropertyName)
+            {
                 UpdateBarBackgroundColor();
+            }
             else if (e.PropertyName == TabbedPage.BarTextColorProperty.PropertyName)
+            {
                 UpdateBarTextColor();
+            }
             else if (e.PropertyName == TopTabbedPage.BarIndicatorColorProperty.PropertyName)
+            {
                 UpdateBarIndicatorColor();
+            }
+            else if (e.PropertyName == TopTabbedPage.SwipeEnabledColorProperty.PropertyName)
+            {
+                UpdateSwipe(Tabbed.SwipeEnabled);
+            }
         }
 
         public override UIViewController ChildViewControllerForStatusBarHidden()
@@ -237,6 +258,11 @@ namespace Naxam.Controls.Platform.iOS
                 return null;
 
             return GetViewController(current);
+        }
+
+        void UpdateSwipe(bool swipeEnabled)
+        {
+            pageViewController.WeakDataSource = swipeEnabled ? this : null;
         }
 
         void Reset()

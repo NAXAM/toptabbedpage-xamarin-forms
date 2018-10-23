@@ -15,6 +15,7 @@ namespace TopTabbedPageQs
             {
                 Title = "Top Tabs",
                 BarBackgroundColor = Color.FromHex("9C27B0"),
+                SwipeEnabled = false,
                 //BarIndicatorColor = Color.DeepPink,
                 //BarTextColor = Color.DeepPink
             };
@@ -122,7 +123,10 @@ namespace TopTabbedPageQs
 
             tabs.ToolbarItems.Add(new ToolbarItem
             {
-                Text = "Main"
+                Text = "Toggle Swipe",
+                Command = new Command(() => {
+                    tabs.SwipeEnabled = !tabs.SwipeEnabled;
+                })
             });
 
             var m = new NavigationPage(tabs)
