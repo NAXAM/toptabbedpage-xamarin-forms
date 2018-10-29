@@ -6,7 +6,9 @@
     x:Class="TopTabbedPageQs.MyPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem
-            Text="Child" />
+            Text="Child 1" />
+        <ToolbarItem
+            Text="Child 2" />
     </ContentPage.ToolbarItems>
     <Grid>
         <Grid.RowDefinitions>
