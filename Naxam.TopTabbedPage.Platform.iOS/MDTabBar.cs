@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using CoreAnimation;
 using CoreGraphics;
 using Foundation;
@@ -11,7 +12,7 @@ namespace Naxam.Controls.Platform.iOS
     {
         static readonly int kMDTabBarHeight = 48;
         static readonly int kMDIndicatorHeight = 48;
-
+        IDisposable frameObserver;
         UIView IndicatorView;
         UIView BeingTouchedView;
         public UIFont Font;
@@ -20,7 +21,7 @@ namespace Naxam.Controls.Platform.iOS
         public nfloat HorizontalPadding { get; set; }
         public UIColor RippleColor { get; set; }
         public UIColor IndicatorColor { get; set; }
-        public NSMutableArray Tabs { get; set; }
+        public NSMutableArray<UIView> Tabs { get; set; }
 
         public MDSegmentedControl(MDTabBar bar)
         {
@@ -35,12 +36,19 @@ namespace Naxam.Controls.Platform.iOS
         public override void WillMoveToSuperview(UIView newsuper)
         {
             base.WillMoveToSuperview(newsuper);
-            //newsuper.AddObserver("Frame", 0, null);
+            if (newsuper != null) frameObserver = newsuper.AddObserver("frame", NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New, OnFrameChanged);
+        }
+
+        private void OnFrameChanged(NSObservedChange obj)
+        {
+            ResizeItems();
+            UpdateSegmentsList();
+            MoveIndicatorToSelectedIndexWithAnimated(false);
         }
 
         public override void RemoveFromSuperview()
         {
-            //Superview.RemoveObserver(this, "Frame");
+            if (frameObserver != null) frameObserver.Dispose();
             base.RemoveFromSuperview();
         }
 
@@ -58,18 +66,6 @@ namespace Naxam.Controls.Platform.iOS
         {
             base.Select(sender);
             TabBar.UpdateSelectedIndex(SelectedSegment);
-        }
-
-        [Export("observeValueForKeyPath:ofObject:change:context:")]
-        public override void ObserveValue(NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr context)
-        {
-            base.ObserveValue(keyPath, ofObject, change, context);
-            if (ofObject == Superview && keyPath == "Frame")
-            {
-                ResizeItems();
-                UpdateSegmentsList();
-                MoveIndicatorToSelectedIndexWithAnimated(false);
-            }
         }
 
         private void SelectionChanged(object sender, EventArgs e)
@@ -149,12 +145,12 @@ namespace Naxam.Controls.Platform.iOS
             {
                 UIView.Animate(.2f, () =>
                 {
-                    IndicatorView.Frame = new CGRect(frame.Left, Bounds.Size.Height - kMDIndicatorHeight, frame.Size.Width, kMDIndicatorHeight);
+                    IndicatorView.Frame = new CGRect(frame.Location.X, Bounds.Size.Height - kMDIndicatorHeight, frame.Size.Width, kMDIndicatorHeight);
                 }, null);
             }
             else
             {
-                IndicatorView.Frame = new CGRect(frame.Left, Bounds.Size.Height - kMDIndicatorHeight, frame.Size.Width, kMDIndicatorHeight);
+                IndicatorView.Frame = new CGRect(frame.Location.X, Bounds.Size.Height - kMDIndicatorHeight, frame.Size.Width, kMDIndicatorHeight);
             }
         }
 
@@ -173,7 +169,7 @@ namespace Naxam.Controls.Platform.iOS
                 {
                     return;
                 }
-                frame = Tabs.GetItem<UIView>((nuint)index).Frame;
+                frame = Tabs[(nuint)index].Frame;
             }
             MoveIndicatorToFrameWithAnimated(frame, animated);
         }
@@ -199,7 +195,7 @@ namespace Naxam.Controls.Platform.iOS
                 {
                     var image = ImageAt(i);
                     var height = Bounds.Size.Height;
-                    var width = Bounds.Size.Width;
+                    var width = height / image.Size.Height * image.Size.Width;
                     itemSize = new CGSize(width, height);
                 }
                 itemSize.Width += HorizontalPadding * 2;
@@ -207,7 +203,6 @@ namespace Naxam.Controls.Platform.iOS
                 segmentedControlWidth += (itemSize.Width);
                 maxItemSize = (nfloat)Math.Max(maxItemSize, itemSize.Width);
             }
-
             var holderWidth = Superview.Bounds.Size.Width - TabBar.HorizontalInset * 2;
             if (segmentedControlWidth < holderWidth)
             {
@@ -229,7 +224,8 @@ namespace Naxam.Controls.Platform.iOS
         {
             if (SelectedSegment >= 0 && Tabs.Count > 0)
             {
-                return Tabs.GetItem<UIView>((nuint)SelectedSegment).Frame;
+                var frame = Tabs[0].Frame;
+                return frame;
             }
             return CGRect.Empty;
         }
@@ -237,14 +233,14 @@ namespace Naxam.Controls.Platform.iOS
         void UpdateSegmentsList()
         {
             var segments = GetSegmentList().MutableCopy();
-            if (segments is NSMutableArray tabs)
+            if (segments is NSArray tabs)
             {
-                Tabs = tabs;
+                Tabs = new NSMutableArray<UIView>(NSArray.FromArray<UIView>(tabs));
             }
 
         }
 
-        NSMutableArray GetSegmentList()
+        NSArray GetSegmentList()
         {
             LayoutIfNeeded();
             var segments = new NSMutableArray((nuint)NumberOfSegments);
@@ -259,11 +255,11 @@ namespace Naxam.Controls.Platform.iOS
             {
                 if (a is UIView viewA && b is UIView viewB)
                 {
-                    if (viewA.Frame.Left < viewB.Frame.Left)
+                    if (viewA.Frame.Location.X < viewB.Frame.Location.X)
                     {
                         return NSComparisonResult.Ascending;
                     }
-                    else if (viewA.Frame.Left > viewB.Frame.Left)
+                    else if (viewA.Frame.Location.X > viewB.Frame.Location.X)
                     {
                         return NSComparisonResult.Descending;
                     }
@@ -271,7 +267,7 @@ namespace Naxam.Controls.Platform.iOS
                 }
                 return NSComparisonResult.Same;
             });
-            return (NSMutableArray)sortedSegments.MutableCopy();
+            return sortedSegments;
         }
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -461,7 +457,7 @@ namespace Naxam.Controls.Platform.iOS
 
             TextColor = UIColor.White;
             TextFont = UIFont.FromName("roboto-medium", 14);
-            IndicatorColor = UIColor.White;
+            IndicatorColor = UIColor.Red;
         }
 
         public override void LayoutSubviews()
@@ -475,31 +471,18 @@ namespace Naxam.Controls.Platform.iOS
         public override void WillMoveToSuperview(UIView newsuper)
         {
             base.WillMoveToSuperview(newsuper);
-            //frameObserver = SegmentedControl.AddObserver("frame", NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New, OnControlFrameChanged);
-            //if (newsuper != null)
-            //{
-            //    SegmentedControl?.AddObserver("Frame", 0, null);
-            //}
+            frameObserver = SegmentedControl.AddObserver("frame", NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New, OnFrameChanged);
         }
 
-        private void OnControlFrameChanged(NSObservedChange obj)
+        private void OnFrameChanged(NSObservedChange obj)
         {
-            //throw new NotImplementedException();
+            ScrollView.ContentSize = SegmentedControl.Bounds.Size;
         }
 
         public override void RemoveFromSuperview()
         {
-            //SegmentedControl?.RemoveObserver(this, "Frame");
+            if (frameObserver != null) frameObserver.Dispose();
             base.RemoveFromSuperview();
-        }
-
-        [Export("observeValueForKeyPath:ofObject:change:context:")]
-        public override void ObserveValue(NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr context)
-        {
-            if (ofObject == SegmentedControl && keyPath == "Frame")
-            {
-                ScrollView.ContentSize = SegmentedControl.Bounds.Size;
-            }
         }
 
         void UpdateItemAppearance()
@@ -514,7 +497,7 @@ namespace Naxam.Controls.Platform.iOS
         {
             var frame = SegmentedControl.GetSelectedSegmentFrame();
             nfloat horizontalInset = HorizontalInset;
-            var contentOffset = frame.Left + horizontalInset - (Frame.Size.Width - frame.Size.Width) / 2;
+            var contentOffset = frame.Location.X + horizontalInset - (Frame.Size.Width - frame.Size.Width) / 2;
             if (contentOffset > ScrollView.ContentSize.Width + horizontalInset - Frame.Size.Width)
             {
                 contentOffset = ScrollView.ContentSize.Width + horizontalInset - Frame.Size.Width;
@@ -524,7 +507,7 @@ namespace Naxam.Controls.Platform.iOS
                 contentOffset = -horizontalInset;
             }
             ScrollView.SetContentOffset(new CGPoint(contentOffset, 0), true);
-
+            Debug.WriteLine($"==>contentOffset: {contentOffset}");
         }
 
         public void UpdateSelectedIndex(nint selectedIndex)
