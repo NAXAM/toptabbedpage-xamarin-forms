@@ -11,7 +11,7 @@ namespace Naxam.Controls.Platform.iOS
     public class MDSegmentedControl : UISegmentedControl
     {
         static readonly int kMDTabBarHeight = 48;
-        static readonly int kMDIndicatorHeight = 48;
+        static readonly int kMDIndicatorHeight = 2;
         IDisposable frameObserver;
         UIView IndicatorView;
         UIView BeingTouchedView;
@@ -163,13 +163,13 @@ namespace Naxam.Controls.Platform.iOS
             }
             var index = SelectedSegment;
             var frame = CGRect.Empty;
-            if ((Tabs != null) && (index > 0))
+            if ((Tabs != null) && (index >= 0))
             {
-                if ((index >= SelectedSegment) || (index >= (nint)Tabs.Count))
+                if ((index >= NumberOfSegments) || (index >= (nint)Tabs.Count))
                 {
                     return;
                 }
-                frame = Tabs[(nuint)index].Frame;
+                frame = Tabs[0].Frame;
             }
             MoveIndicatorToFrameWithAnimated(frame, animated);
         }
@@ -366,7 +366,7 @@ namespace Naxam.Controls.Platform.iOS
         private UIColor _IndicatorColor;
         public UIColor IndicatorColor
         {
-            get { return _NormalTextColor; }
+            get { return _IndicatorColor; }
             set
             {
                 _IndicatorColor = value;
@@ -487,7 +487,7 @@ namespace Naxam.Controls.Platform.iOS
 
         void UpdateItemAppearance()
         {
-            if (TextColor != null && TextFont != null)
+            if (TextColor != null || TextFont != null)
             {
                 SegmentedControl?.SetTextFont(TextFont, TextColor);
             }
