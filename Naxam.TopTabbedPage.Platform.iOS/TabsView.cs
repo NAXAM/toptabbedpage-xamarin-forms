@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Foundation;
-using MaterialControls;
 using UIKit;
 
 namespace Naxam.Controls.Platform.iOS
 {
-    public class TabsView : UIView, IMDTabBarDelegate
+    public class TabsView : UIView
     {
         public event EventHandler<TabsSelectionChangedEventArgs> TabsSelectionChanged;
 
