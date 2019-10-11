@@ -87,7 +87,6 @@
     <Compile Include="TopTabbedRendererSelection.cs" />
     <Compile Include="TopTabbedRendererLayout.cs" />
     <Compile Include="MDTabBar.cs" />
-    <Compile Include="MDSegmentedControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

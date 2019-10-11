@@ -6,7 +6,7 @@ using UIKit;
 
 namespace Naxam.Controls.Platform.iOS
 {
-    public class TabsView : UIView
+    public class TabsView : UIView, IMDTabBarDelegate
     {
         public event EventHandler<TabsSelectionChangedEventArgs> TabsSelectionChanged;
 
@@ -104,7 +104,7 @@ namespace Naxam.Controls.Platform.iOS
 
         internal void ReplaceItem(string title, int index)
         {
-           _tabBar.ReplaceItem(new NSString(title), (nuint)index);
+           _tabBar.ReplaceItem(new NSString(title), index);
         }
 
         public void DidChangeSelectedIndex(MDTabBar tabBar, nuint selectedIndex)
