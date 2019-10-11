@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Naxam.Controls.Forms;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
 
 namespace TopTabbedPageQs
 {
@@ -14,12 +15,12 @@ namespace TopTabbedPageQs
             var tabs = new TopTabbedPage
             {
                 Title = "TopTabs",
-                //BarBackgroundColor = Color.FromHex("9C27B0"),
+                BarBackgroundColor = Color.Red,
                 SwipeEnabled = false,
-                //BarIndicatorColor = Color.DeepPink,
-                //BarTextColor = Color.DeepPink
-                Style = Resources["TabsPage"] as Style
+                BarIndicatorColor = Color.Green,
+                BarTextColor = Color.Blue
             };
+
             tabs.Children.Add(new MyPage
             {
                 Title = "My Page",

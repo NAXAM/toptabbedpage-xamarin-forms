@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Foundation;
-using MaterialControls;
 using Naxam.Controls.Forms;
 using Naxam.Controls.Platform.iOS;
 using Naxam.Controls.Platform.iOS.Utils;

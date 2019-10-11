@@ -86,6 +86,7 @@
     <Compile Include="Utils\EffectUtilities.cs" />
     <Compile Include="TopTabbedRendererSelection.cs" />
     <Compile Include="TopTabbedRendererLayout.cs" />
+    <Compile Include="MDTabBar.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

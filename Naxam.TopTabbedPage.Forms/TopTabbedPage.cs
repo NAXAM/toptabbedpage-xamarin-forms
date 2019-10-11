@@ -4,12 +4,6 @@ namespace Naxam.Controls.Forms
 {
     public class TopTabbedPage : TabbedPage
     {
-        public TopTabbedPage()
-        {
-            //BarBackgroundColor = Color.Blue;
-            //BarTextColor = Color.White;
-        }
-
         public static readonly BindableProperty BarIndicatorColorProperty = BindableProperty.Create(
             nameof(BarIndicatorColor),
             typeof(Color),

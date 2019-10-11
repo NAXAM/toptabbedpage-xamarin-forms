@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Foundation;
-using MaterialControls;
 using UIKit;
 
 namespace Naxam.Controls.Platform.iOS
@@ -105,7 +104,7 @@ namespace Naxam.Controls.Platform.iOS
 
         internal void ReplaceItem(string title, int index)
         {
-           _tabBar.ReplaceItem(new NSString(title), (nuint)index);
+           _tabBar.ReplaceItem(new NSString(title), index);
         }
 
         public void DidChangeSelectedIndex(MDTabBar tabBar, nuint selectedIndex)
