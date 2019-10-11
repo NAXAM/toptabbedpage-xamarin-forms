@@ -167,13 +167,13 @@ namespace Naxam.Controls.Platform.iOS
             }
             var index = SelectedSegment;
             var frame = CGRect.Empty;
-            if (index > 0)
+            if ((Tabs != null) && (index > 0))
             {
                 if ((index >= SelectedSegment) || (index >= (nint)Tabs.Count))
                 {
                     return;
                 }
-                frame = Tabs[(nuint)index].Frame;
+                frame = Tabs.GetItem<UIView>((nuint)index).Frame;
             }
             MoveIndicatorToFrameWithAnimated(frame, animated);
         }
@@ -229,7 +229,7 @@ namespace Naxam.Controls.Platform.iOS
         {
             if (SelectedSegment >= 0 && Tabs.Count > 0)
             {
-                return Tabs[(nuint)SelectedSegment].Frame;
+                return Tabs.GetItem<UIView>((nuint)SelectedSegment).Frame;
             }
             return CGRect.Empty;
         }
@@ -305,6 +305,7 @@ namespace Naxam.Controls.Platform.iOS
 
     public class MDTabBar : UIView
     {
+        IDisposable frameObserver;
         public MDSegmentedControl SegmentedControl { get; set; }
         public UIScrollView ScrollView { get; set; }
 
@@ -474,10 +475,16 @@ namespace Naxam.Controls.Platform.iOS
         public override void WillMoveToSuperview(UIView newsuper)
         {
             base.WillMoveToSuperview(newsuper);
+            //frameObserver = SegmentedControl.AddObserver("frame", NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New, OnControlFrameChanged);
             //if (newsuper != null)
             //{
             //    SegmentedControl?.AddObserver("Frame", 0, null);
             //}
+        }
+
+        private void OnControlFrameChanged(NSObservedChange obj)
+        {
+            //throw new NotImplementedException();
         }
 
         public override void RemoveFromSuperview()

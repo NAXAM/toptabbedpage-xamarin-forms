@@ -5,7 +5,7 @@
 	<key>CFBundleName</key>
 	<string>Top Tabbed</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.naxam.toptabbedpageqs-ios</string>
+	<string>net.naxam.toptabbedpage</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
