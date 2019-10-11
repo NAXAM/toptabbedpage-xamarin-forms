@@ -136,7 +136,7 @@ namespace Naxam.Controls.Platform.iOS
             TabBar.AddConstraint(tabBarHeight);
 
             if (pageViewController.ViewControllers.Length == 0
-                && lastSelectedIndex >= 0 || lastSelectedIndex < ViewControllers.Count)
+                && lastSelectedIndex >= 0 && lastSelectedIndex < ViewControllers.Count)
             {
                 pageViewController.SetViewControllers(
                     new[] { ViewControllers[lastSelectedIndex] },
