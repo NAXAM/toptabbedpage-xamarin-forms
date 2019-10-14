@@ -169,7 +169,7 @@ namespace Naxam.Controls.Platform.iOS
                 {
                     return;
                 }
-                frame = Tabs[0].Frame;
+                frame = Tabs[(nuint)SelectedSegment].Frame;
             }
             MoveIndicatorToFrameWithAnimated(frame, animated);
         }
@@ -224,7 +224,7 @@ namespace Naxam.Controls.Platform.iOS
         {
             if (SelectedSegment >= 0 && Tabs.Count > 0)
             {
-                var frame = Tabs[0].Frame;
+                var frame = Tabs[(nuint)SelectedSegment].Frame;
                 return frame;
             }
             return CGRect.Empty;
@@ -246,7 +246,7 @@ namespace Naxam.Controls.Platform.iOS
             var segments = new NSMutableArray((nuint)NumberOfSegments);
             foreach (UIView view in Subviews)
             {
-                if (view is UIImageView)
+                if (view.Class.Name == "UISegment")
                 {
                     segments.Add(view);
                 }
