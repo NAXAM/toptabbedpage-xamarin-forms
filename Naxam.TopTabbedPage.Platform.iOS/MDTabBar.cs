@@ -442,7 +442,10 @@ namespace Naxam.Controls.Platform.iOS
             var image = new UIImage();
             SegmentedControl.SetBackgroundImage(image, UIControlState.Normal, UIBarMetrics.Default);
             SegmentedControl.SetDividerImage(image, UIControlState.Normal, UIControlState.Normal, UIBarMetrics.Default);
-            SegmentedControl.SelectedSegmentTintColor = UIColor.Clear;
+            if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+            {
+                SegmentedControl.SelectedSegmentTintColor = UIColor.Clear;
+            }
             SegmentedControl.BackgroundColor = UIColor.Clear;
             ScrollView = new UIScrollView();
             ScrollView.ShowsHorizontalScrollIndicator = false;
