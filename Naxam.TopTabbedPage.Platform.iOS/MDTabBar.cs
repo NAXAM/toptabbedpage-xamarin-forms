@@ -438,9 +438,12 @@ namespace Naxam.Controls.Platform.iOS
 
         void InitContent()
         {
-            HorizontalInset = 8;
             SegmentedControl = new MDSegmentedControl(this);
-            SegmentedControl.TintColor = UIColor.Clear;
+            var image = new UIImage();
+            SegmentedControl.SetBackgroundImage(image, UIControlState.Normal, UIBarMetrics.Default);
+            SegmentedControl.SetDividerImage(image, UIControlState.Normal, UIControlState.Normal, UIBarMetrics.Default);
+            SegmentedControl.SelectedSegmentTintColor = UIColor.Clear;
+            SegmentedControl.BackgroundColor = UIColor.Clear;
             ScrollView = new UIScrollView();
             ScrollView.ShowsHorizontalScrollIndicator = false;
             ScrollView.ShowsVerticalScrollIndicator = false;
@@ -449,15 +452,6 @@ namespace Naxam.Controls.Platform.iOS
             AddSubview(ScrollView);
             HorizontalPaddingPerItem = Device.Idiom == TargetIdiom.Tablet ? 24 : 12;
             SegmentedControl.HorizontalPadding = HorizontalPaddingPerItem;
-            BackgroundColor = UIColor.FromRGB(63, 81, 181);
-            Layer.ShadowColor = UIColor.Black.CGColor;
-            Layer.ShadowRadius = 1;
-            Layer.ShadowOpacity = 0.5f;
-            Layer.ShadowOffset = new CGSize(0, 1.5);
-
-            TextColor = UIColor.White;
-            TextFont = UIFont.FromName("roboto-medium", 14);
-            IndicatorColor = UIColor.Red;
         }
 
         public override void LayoutSubviews()
