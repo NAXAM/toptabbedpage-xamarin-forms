@@ -221,7 +221,10 @@ namespace Naxam.Controls.Platform.iOS
             {
                 var current = Tabbed.CurrentPage;
                 if (current == null)
+                {
+                    lastSelectedIndex = -1;
                     return;
+                }
 
                 var controller = GetViewController(current);
                 if (controller == null)
@@ -310,6 +313,9 @@ namespace Naxam.Controls.Platform.iOS
 
         void TeardownPage(Page page, int index)
         {
+            if (lastSelectedIndex == index)
+                lastSelectedIndex = -1;
+
             page.PropertyChanged -= OnPagePropertyChanged;
 
             Platform.SetRenderer(page, null);
